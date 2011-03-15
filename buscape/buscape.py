@@ -6,6 +6,7 @@ __author__="Alê Borba"
 __version__="v0.6.2"
 
 from urllib2 import urlopen, Request, URLError, HTTPError
+from xml.dom.minidom import parse, parseString
 
 class Buscape():
     """
@@ -326,7 +327,28 @@ class TopProducts():
     o Buscape.top_products()
     """
 
-    def __ini__(self,filterID=None, valueID=None):
+    def __init__(self,filterID=None, valueID=None, applicationID=None, sandbox=False):
         """
         Classe construtora
         """
+
+        buscape = Buscape(applicationID)
+
+        if sandbox:
+            buscape.set_sandbox()
+
+        response        = buscape.top_products(filterID=filterID, valueID=valueID)
+        xml             = response['data']
+        top_products    = parseString(xml)
+        itens           = {}
+
+        for produto in top_products.documentElement.getElementsByTagName('product'):
+            id = produto.getAttribute('id')
+            id = int(id)
+            
+            for infos in produto.getElementsByTagName('productName'):
+                for nomes in infos.childNodes:
+                    itens.setdefault(id, nomes.data)
+
+
+        print itens
