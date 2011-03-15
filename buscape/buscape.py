@@ -319,3 +319,14 @@ class Buscape():
         ret = self.__search(method=method,parameter=parameter)
 
         return ret
+
+class TopProducts():
+    """
+    Classe para fazer o tratamento das respostas da API BuscaPé usando
+    o Buscape.top_products()
+    """
+
+    def __ini__(self,filterID=None, valueID=None):
+        """
+        Classe construtora
+        """
