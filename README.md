@@ -123,4 +123,4 @@ Exemplo de uso
 
 	#imprimindo uma lista com os códigos de produto e nomes
 	for id,nome in resposta.items():
-		print id,'=>',nome
+		print id,'=>',nome[0]
