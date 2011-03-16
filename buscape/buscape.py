@@ -337,18 +337,32 @@ class TopProducts():
         if sandbox:
             buscape.set_sandbox()
 
-        response        = buscape.top_products(filterID=filterID, valueID=valueID)
-        xml             = response['data']
-        top_products    = parseString(xml)
+        response            = buscape.top_products(filterID=filterID, valueID=valueID)
+        xml                 = response['data']
+        self.top_products   = parseString(xml)
+
+    
+    def get_list(self):
+        """
+        Retorna os resultados em um dicionário indexados pelo id do produto
+        """
+
         itens           = {}
 
-        for produto in top_products.documentElement.getElementsByTagName('product'):
+        for produto in self.top_products.documentElement.getElementsByTagName('product'):
             id = produto.getAttribute('id')
             id = int(id)
-            
-            for infos in produto.getElementsByTagName('productName'):
-                for nomes in infos.childNodes:
-                    itens.setdefault(id, nomes.data)
 
+            for nome in produto.getElementsByTagName('productName'):
+                for thumb in produto.getElementsByTagName('thumbnail'):
+                    for link in produto.getElementsByTagName('links'):
+                        for links in link.getElementsByTagName('link'):
+                            for pricem in produto.getElementsByTagName('priceMin'):
+                                for priceM in produto.getElementsByTagName('priceMax'):
+                                    if links.getAttribute('type') == 'product':
+                                        for nomes in nome.childNodes:
+                                            for priceMin in pricem.childNodes:
+                                                for priceMax in priceM.childNodes:
+                                                    itens.setdefault(id, [nomes.data,thumb.getAttribute('url'),links.getAttribute('url'),priceMin.data,priceMax.data])
 
-        print itens
+        return itens
