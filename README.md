@@ -30,6 +30,9 @@ Existem dois modos:
     sudo python setup.py install
 
 
+classe Buscape()
+=================
+
 Métodos disponíveis
 --------------------
 
@@ -91,3 +94,33 @@ Exemplo de uso:
 
     #Imprimindo
     print exemplo
+
+
+classe TopProducts()
+==========================
+
+Métodos Disponíveis
+---------------------
+
+get_list()
+-------------
+Retorna os resultados da busca topProducts em um dicionário indexado pelo id do produto.
+
+Exemplo de uso
+----------------
+
+	#! /usr/bin/python
+	# -*- encoding: utf-8 -*-
+	
+	#importando a lib
+	from buscape import TopProducts
+
+	#Instanciando o objeto
+	top_products = TopProducts(applicationID='your_applicationID')
+	
+	#retornando a informação
+	resposta = top_products.get_list()
+
+	#imprimindo uma lista com os códigos de produto e nomes
+	for id,nome in resposta.items():
+		print id,'=>',nome
